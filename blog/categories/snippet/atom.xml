@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Snippet | My snippets]]></title>
+  <link href="http://agugliotta.github.io/blog/categories/snippet/atom.xml" rel="self"/>
+  <link href="http://agugliotta.github.io/"/>
+  <updated>2014-03-25T10:53:48-03:00</updated>
+  <id>http://agugliotta.github.io/</id>
+  <author>
+    <name><![CDATA[Agustin Gugliotta]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Sort an Array of Hashes in Ruby]]></title>
+    <link href="http://agugliotta.github.io/blog/2014/03/25/sort-an-array-of-hashes-in-ruby/"/>
+    <updated>2014-03-25T10:23:10-03:00</updated>
+    <id>http://agugliotta.github.io/blog/2014/03/25/sort-an-array-of-hashes-in-ruby</id>
+    <content type="html"><![CDATA[<p>Let say we have and array of hashes like this
+```ruby Array of hashes</p>
+
+<p>list=[</p>
+
+<pre><code>  {:name =&gt; 'John', :age =&gt;40},
+  {:name =&gt; 'Ana', :age =&gt;25},
+  {:name =&gt; 'Peter', :age =&gt;30},
+ ]
+</code></pre>
+
+<p>```</p>
+
+<p>and we need to sort of one of the field of the hash.</p>
+
+<p>We use the method <strong>sort_by!</strong> from the  Array class
+```ruby sort_by method <a href="http://ruby-doc.org/core-2.0/Array.html#method-i-sort_by-21">http://ruby-doc.org/core-2.0/Array.html#method-i-sort_by-21</a>
+list.sort_by{|item| item[:age]}</p>
+
+<h1>=> [{&ldquo;name&rdquo;=>&ldquo;Ana&rdquo;, &ldquo;age&rdquo;=>25}, {&ldquo;name&rdquo;=>&ldquo;Peter&rdquo;, &ldquo;age&rdquo;=>30}, {&ldquo;name&rdquo;=>&ldquo;John&rdquo;, &ldquo;age&rdquo;=>40}]</h1>
+
+<p>```</p>
+
+<p>If we want to sort in descinding order we add a &lsquo;&ndash;&rsquo; before de field
+```ruby sort_by method descinding
+list.sort_by{|item| -item[:age]}</p>
+
+<h1>=> [{&ldquo;name&rdquo;=>&ldquo;John&rdquo;, &ldquo;age&rdquo;=>40}, {&ldquo;name&rdquo;=>&ldquo;Peter&rdquo;, &ldquo;age&rdquo;=>30}, {&ldquo;name&rdquo;=>&ldquo;Ana&rdquo;, &ldquo;age&rdquo;=>25}]</h1>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+</feed>

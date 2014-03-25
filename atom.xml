@@ -4,7 +4,7 @@
   <title><![CDATA[My snippets]]></title>
   <link href="http://agugliotta.github.io/atom.xml" rel="self"/>
   <link href="http://agugliotta.github.io/"/>
-  <updated>2014-03-25T09:51:07-03:00</updated>
+  <updated>2014-03-25T10:53:48-03:00</updated>
   <id>http://agugliotta.github.io/</id>
   <author>
     <name><![CDATA[Agustin Gugliotta]]></name>
@@ -12,5 +12,53 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sort an Array of Hashes in Ruby]]></title>
+    <link href="http://agugliotta.github.io/blog/2014/03/25/sort-an-array-of-hashes-in-ruby/"/>
+    <updated>2014-03-25T10:23:10-03:00</updated>
+    <id>http://agugliotta.github.io/blog/2014/03/25/sort-an-array-of-hashes-in-ruby</id>
+    <content type="html"><![CDATA[<p>Let say we have and array of hashes like this</p>
+
+<figure class='code'><figcaption><span>Array of hashes</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">list</span><span class="o">=[</span>
+</span><span class='line'>      <span class="p">{</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="ss">:age</span> <span class="o">=&gt;</span><span class="mi">40</span><span class="p">},</span>
+</span><span class='line'>      <span class="p">{</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s1">&#39;Ana&#39;</span><span class="p">,</span> <span class="ss">:age</span> <span class="o">=&gt;</span><span class="mi">25</span><span class="p">},</span>
+</span><span class='line'>      <span class="p">{</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s1">&#39;Peter&#39;</span><span class="p">,</span> <span class="ss">:age</span> <span class="o">=&gt;</span><span class="mi">30</span><span class="p">},</span>
+</span><span class='line'>     <span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and we need to sort of one of the field of the hash.</p>
+
+<p>We use the method <strong>sort_by!</strong> from the  Array class</p>
+
+<figure class='code'><figcaption><span>sort_by method</span><a href='http://ruby-doc.org/core-2.0/Array.html#method-i-sort_by-21'>link</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">list</span><span class="o">.</span><span class="n">sort_by</span><span class="p">{</span><span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="n">item</span><span class="o">[</span><span class="ss">:age</span><span class="o">]</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#=&gt; [{&quot;name&quot;=&gt;&quot;Ana&quot;, &quot;age&quot;=&gt;25}, {&quot;name&quot;=&gt;&quot;Peter&quot;, &quot;age&quot;=&gt;30}, {&quot;name&quot;=&gt;&quot;John&quot;, &quot;age&quot;=&gt;40}]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If we want to sort in descinding order we add a &lsquo;&ndash;&rsquo; before de field</p>
+
+<figure class='code'><figcaption><span>sort_by method descinding</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">list</span><span class="o">.</span><span class="n">sort_by</span><span class="p">{</span><span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="o">-</span><span class="n">item</span><span class="o">[</span><span class="ss">:age</span><span class="o">]</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#=&gt; [{&quot;name&quot;=&gt;&quot;John&quot;, &quot;age&quot;=&gt;40}, {&quot;name&quot;=&gt;&quot;Peter&quot;, &quot;age&quot;=&gt;30}, {&quot;name&quot;=&gt;&quot;Ana&quot;, &quot;age&quot;=&gt;25}]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
 </feed>
