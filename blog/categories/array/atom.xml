@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Array | My snippets]]></title>
   <link href="http://agugliotta.github.io/blog/categories/array/atom.xml" rel="self"/>
   <link href="http://agugliotta.github.io/"/>
-  <updated>2014-03-25T10:53:48-03:00</updated>
+  <updated>2014-03-26T16:26:45-03:00</updated>
   <id>http://agugliotta.github.io/</id>
   <author>
     <name><![CDATA[Agustin Gugliotta]]></name>
@@ -41,7 +41,7 @@ list.sort_by{|item| item[:age]}</p>
 
 <p>```</p>
 
-<p>If we want to sort in descinding order we add a &lsquo;&ndash;&rsquo; before de field
+<p>If we want to sort in descinding order we add a &lsquo;&ndash;&rsquo; before the field
 ```ruby sort_by method descinding
 list.sort_by{|item| -item[:age]}</p>
 
