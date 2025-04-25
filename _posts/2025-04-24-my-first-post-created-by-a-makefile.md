@@ -118,8 +118,7 @@ help: Makefile ## Display this help message
 	@echo "  LAYOUT    (Optional) Custom layout (defaults to 'post' or 'page')."
 	@echo "  TAGS      (Optional, post only) Comma-separated tags. e.g., TAGS=\"a,b,c\""
 	@echo "  CATEGORY  (Optional, post only) Single category name."
-{% endhighlight%}
-
+{% endhighlight %}
 
 
 
