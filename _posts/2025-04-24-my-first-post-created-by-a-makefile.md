@@ -7,7 +7,7 @@ tags: [ia, makefile]
 
 To simplify future post and creations I use IA to create a little Makefile to make it easy and let repetitive.
 
-Tis is the code for anyone interest:
+This is the code for anyone interest:
 
 {% highlight makefile %}
 # Makefile for Jekyll Content Creation
