@@ -9,7 +9,7 @@ To simplify future post and creations I use IA to create a little Makefile to ma
 
 Tis is the code for anyone interest:
 
-````
+{% highlight makefile %}
 # Makefile for Jekyll Content Creation
 
 # --- Configuration ---
@@ -118,8 +118,7 @@ help: Makefile ## Display this help message
 	@echo "  LAYOUT    (Optional) Custom layout (defaults to 'post' or 'page')."
 	@echo "  TAGS      (Optional, post only) Comma-separated tags. e.g., TAGS=\"a,b,c\""
 	@echo "  CATEGORY  (Optional, post only) Single category name."
-```
-
+{% endhighlight %}
 
 
 
