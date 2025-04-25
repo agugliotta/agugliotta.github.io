@@ -1,25 +1,94 @@
+spellchecker: 'aspell'
+jobs: 4
 matrix:
-- name: Markdown
-  expect_match: false
-  apsell:
-    mode: en
-  dictionary:
-    wordlists:
-    - .wordlist.txt
-    output: wordlist.dic
-    encoding: utf-8
-  pipeline:
-  - pyspelling.filters.markdown:
-      markdown_extensions:
-      - markdown.extensions.extra:
-  - pyspelling.filters.html:
-      comments: false
-      attributes:
-      - alt
-      ignores:
-      - code
-      - pre
-      - blockquote
-      - highlight
-  sources:
-  - '**/*.md'
+  - name: 'markdown'
+    default_encoding: 'utf-8'
+    expect_match: true
+    sources:
+      - '_posts/*.md'
+
+    dictionary:
+      wordlists:
+        - '.wordlist.txt'
+
+    aspell:
+      lang: 'en'
+      d: 'en_US'
+      mode: 'markdown'
+      ignore-case: true
+
+    pipeline:
+      - pyspelling.filters.context:
+          context_visible_first: true
+          escapes: '\\[\\`~]'
+          delimiters:
+
+            # ignore liquid nospell blocks
+            #
+            # example:
+            #
+            # {% comment %} begin nospell {% endcomment %}
+            # [..]
+            # {% comment %} end nospell {% endcomment %}
+            #
+            - open: '(?m)(\s{0,}?){%(\s+)?comment\2?%}\2?begin\2?nospell\2?{%\2?endcomment\2?%}'
+              content: '[\S\s]+'
+              close: '\1{%\2?comment\2?%}\2?end\2?nospell\2?{%\2?endcomment\2?%}'
+
+            # ignore liquid highlight blocks
+            #
+            # example:
+            #
+            # {% highlight yaml %}
+            # [..]
+            # {% endhighlight %}
+            #
+            - open: '(?m)^(\s{0,}?){%(\s+)?highlight\2[A-z0-9]+\2?%}'
+              content: '[\S\s]+'
+              close: '\1{%\2?endhighlight\2?%}$'
+
+            # ignore any liquid tags
+            #
+            # examples:
+            #
+            # - {% raw %}
+            # - {% endhighlight %}
+            # - {% gist somerandomeid %}
+            #
+            - open: '(?s)^\s{0,}?{%\s+[A-Za-z0-9]+\s+'
+              close: '%}$'
+
+            # ignore title and author in the header
+            #
+            # example:
+            #
+            # ---
+            # title: My blog post title
+            # author: John and Jane Doe
+            # ---
+            #
+            - open: '(?s)^(?:title|author):'
+              content: '[^\n]+'
+              close: '$'
+
+      - pyspelling.filters.markdown:
+          markdown_extensions:
+            - pymdownx.superfences: {}
+
+      - pyspelling.filters.html:
+          comments: false
+          attributes:
+            - 'title'
+            - 'alt'
+          ignores:
+            - ':matches(code, pre)'
+
+      - pyspelling.filters.url: {}
+
+      - pyspelling.filters.context:
+          context_visible_first: true
+          escapes: '\\[\\`~]'
+          delimiters:
+            # ignore text between inline back ticks
+            - open: '(?P<open>`+)'
+              close: '(?P=open)'
