@@ -20,5 +20,6 @@ matrix:
       - code
       - pre
       - blockquote
+      - highlight
   sources:
   - '**/*.md'
