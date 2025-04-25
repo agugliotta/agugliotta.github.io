@@ -1,0 +1,18 @@
+# .github/workflows/check_spelling.yml
+
+name: Spellcheck
+on:
+  pull_request:
+    paths:
+    - '**.js'
+    - '**.txt'
+    - '**.html'
+    - '**.md'
+
+jobs:
+  spelling:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Check Spelling
+      uses: rojopolis/spellcheck-github-actions@v0.47.0
