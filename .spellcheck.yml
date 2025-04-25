@@ -1,5 +1,5 @@
 matrix:
-  - name: 'markdown'
+  - name: Markdown
     default_encoding: 'utf-8'
     expect_match: true
     sources:
