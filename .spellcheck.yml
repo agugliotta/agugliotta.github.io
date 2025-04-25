@@ -1,5 +1,3 @@
-spellchecker: 'aspell'
-jobs: 4
 matrix:
   - name: 'markdown'
     default_encoding: 'utf-8'
