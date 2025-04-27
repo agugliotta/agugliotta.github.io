@@ -88,6 +88,8 @@ page: ## Create a new page
 	@echo "" >> "$(PAGE_FILENAME)"
 	@echo "Page created: $(PAGE_FILENAME)"
 
+serve: ##  Test the blog locally
+	 bundle exec jekyll serve --trace --livereload
 # Example of a potential 'clean' target (use with caution)
 # clean: ## Remove generated files (example, customize carefully!)
 # 	@echo "Cleaning generated files..."
