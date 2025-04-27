@@ -7,18 +7,18 @@ tags: [github, workflow, actions, spellcheck]
 
 The next step of the blog for me, was to integrate a spellcheck in the workflow of Github Actions.
 
-I'm not a native English speaker and I want it to play a little with the worflows so this is what I end it with...
+I'm not a native English speaker and I want it to play a little with the workflows so this is what I end it with...
 
-You'll need al least 3 files to acommplish this feature the way I did:
+You'll need al least 3 files to accomplish this feature the way I did:
 
-* A Workflow file inside the .github/workflows directoy
+* A Workflow file inside the .github/workflows directory
 * A YML file where all the login of the functionality will be
-* A text file to ignore certains words
+* A text file to ignore certain words
 
 
 For the workflow we'll be using a Github action already created that it use PySpelling (a Python library), you can checkout the [link](https://github.com/rojopolis/spellcheck-github-actions).
 
-I'm not expert in Github actions so I ended having some issues with the tag version of the repo. The solution I found was to use v0 which is means use the last version always.
+I'm not expert in Github actions so I ended having some issues with the tag version of the repository. The solution I found was to use v0 which is means use the last version always.
 In the end I wrote a file that it look like this:
 
 {% highlight yaml %}
