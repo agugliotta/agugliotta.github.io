@@ -2,3 +2,9 @@ makefile
 Makefile
 YML
 PySpelling
+JSON
+backticks
+struct
+hardcoded
+API's
+backend
