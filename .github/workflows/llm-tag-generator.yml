@@ -28,11 +28,16 @@ jobs:
           files: '_posts/**.md'
           since_last_commit: true
           
-      # 💥 NEW HELPER STEP TO FIX PARSING ERROR
+      # 💥 NEW HELPER STEP TO FIX PARSING ERROR (No expression syntax here!)
       - name: Set Post File Path Safely
         id: set_path
-        # Use shell logic to safely assign the path or 'SKIP'
-        run: echo "post_path=$(if [[ "${{ steps.files.outputs.modified_files_serialized }}" != "[]" ]]; then echo "${{ fromJson(steps.files.outputs.modified_files_serialized)[0] }}"; else echo "SKIP"; fi)" >> $GITHUB_OUTPUT
+        run: |
+          if [[ "${{ steps.files.outputs.modified_files }}" != "" ]]; then
+            POST_PATH=$(echo "${{ steps.files.outputs.modified_files }}" | awk '{print $1}')
+            echo "post_path=${POST_PATH}" >> $GITHUB_OUTPUT
+          else
+            echo "post_path=SKIP" >> $GITHUB_OUTPUT
+          fi
 
       # 2. Setup Python and Dependencies
       - name: Setup Python
