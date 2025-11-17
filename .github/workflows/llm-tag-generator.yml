@@ -30,13 +30,15 @@ jobs:
       # 💥 NEW HELPER STEP TO FIX PARSING ERROR (No expression syntax here!)
       - name: Set Post File Path Safely
         id: set_path
+        env:
+          MODIFIED_FILES: ${{ steps.files.outputs.modified_files }}
         run: |
           # 1. Check if the 'modified_files' output (space-separated list) is NOT empty.
           #    This is simpler and safer than checking for '[]' or 'null'.
-          if [[ "${{ steps.files.outputs.modified_files }}" != "" ]]; then
+          if [[ ${MODIFIED_FILES} != "" ]]; then
             
             # 2. Extract the first path from the space-separated list using awk
-            POST_PATH=$(echo "${{ steps.files.outputs.modified_files }}" | awk '{print $1}')
+            POST_PATH=$(echo ${MODIFIED_FILES} | awk '{print $1}')
             
             # 3. Set the output variable
             echo "post_path=${POST_PATH}" >> $GITHUB_OUTPUT
