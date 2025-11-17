@@ -23,7 +23,7 @@ jobs:
       # 1. Identify Modified Files
       - name: Get modified files
         id: files
-        uses: tj-actions/changed-files@v40
+        uses: tj-actions/changed-files@v46.0.1
         with:
           files: '_posts/**.md'
           
