@@ -34,6 +34,21 @@ theme: minima
 plugins:
   - jekyll-feed
 
+# --- Configuración de Giscus ---
+giscus:
+  # ATRIBUTOS OBLIGATORIOS
+  repo: "agugliotta/agugliotta.github.io" # data-repo
+  repo_id: "R_kgDOObXWqw"               # data-repo-id
+  category: "Comments"                  # data-category
+  category_id: "DIC_kwDOObXWq84Cx5MU"   # data-category-id
+  mapping: "pathname"                   # data-mapping
+  reactions_enabled: 1                  # data-reactions-enabled (1 = sí)
+
+  # ATRIBUTOS OPCIONALES/DE DISEÑO
+  theme: "preferred_color_scheme"       # data-theme (usará el tema de color preferido del usuario)
+  lang: "en"                            # data-lang (el idioma de la UI de Giscus)
+  input_position: "top"
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
