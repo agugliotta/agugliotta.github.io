@@ -3,72 +3,99 @@ import sys
 import yaml
 from google import genai
 
-# --- Configuration ---
+# --- Configuration (Set by GitHub Actions Environment Variables) ---
 POST_TO_PROCESS = os.environ.get('POST_TO_PROCESS')
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
-SENTINEL_TAG = 'ai-processed'
-TAG_KEY = 'tags'
+TAG_KEY = 'tags' 
 
 if not POST_TO_PROCESS or not GEMINI_API_KEY:
     print("Error: Environment variables POST_TO_PROCESS and GEMINI_API_KEY must be set.")
     sys.exit(1)
 
-# --- Utility Functions ---
+# --- Utility Functions for File I/O ---
 
 def parse_file(filepath):
-    """Loads YAML front matter and content from the Markdown file."""
-    with open(filepath, 'r', encoding='utf-8') as f:
-        content = f.read()
+    """
+    Loads YAML front matter and content from the Markdown file.
+    """
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            content = f.read()
 
-    # Split the file into YAML front matter and body content
-    parts = content.split('---', 2)
-    if len(parts) < 3:
-        # File is likely corrupted or missing front matter
-        raise ValueError("File does not contain valid YAML front matter delimiters (---).")
-    
-    front_matter_raw = parts[1].strip()
-    post_content = parts[2].strip()
-    
-    front_matter = yaml.safe_load(front_matter_raw)
-    return front_matter, post_content
+        # Split content using the YAML delimiters (---)
+        parts = content.split('---', 2)
+        if len(parts) < 3:
+            raise ValueError("File does not contain valid YAML front matter delimiters (---).")
+        
+        front_matter_raw = parts[1].strip()
+        post_content = parts[2].strip()
+        
+        # Safely loads the YAML header
+        front_matter = yaml.safe_load(front_matter_raw) or {}
+        return front_matter, post_content
+    except Exception as e:
+        print(f"Error parsing file {filepath}: {e}")
+        raise
 
 def write_file(filepath, front_matter, post_content):
-    """Writes the updated YAML front matter and content back to the file."""
-    # Convert dictionary back to YAML string
-    yaml_dump = yaml.dump(front_matter, sort_keys=False, default_flow_style=False)
-    
-    # Reconstruct the file content
-    new_content = f"---\n{yaml_dump}---\n\n{post_content}\n"
-    
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(new_content)
+    """
+    Writes the updated YAML front matter and content back to the file.
+    """
+    try:
+        # Converts the Python dictionary back to a clean YAML string
+        yaml_dump = yaml.dump(front_matter, sort_keys=False, default_flow_style=False)
+        
+        # Reconstructs the file content
+        new_content = f"---\n{yaml_dump}---\n\n{post_content}\n"
+        
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(new_content)
+    except Exception as e:
+        print(f"Error writing to file {filepath}: {e}")
+        raise
+
+# --- Core LLM Communication Function ---
 
 def call_llm_for_tags(content):
-    """Calls Gemini to generate new tags."""
+    """
+    Calls the Gemini API to generate new tags based on post content.
+    Returns a list of cleaned, merged tag strings.
+    """
     try:
-        client = genai.Client(api_key=GEMINI_API_KEY)
+        # Client automatically uses GEMINI_API_KEY environment variable
+        client = genai.Client()
         
+        # --- Prompt Engineering ---
+        # Request a specific output format (comma-separated list) for easy parsing
         prompt = (
-            "Analyze the blog post content. Generate 5 high-value, "
-            "niche, and technical tags (keywords) that best summarize the topic. "
-            "Return ONLY the 5 tags separated by commas, with no other surrounding text."
-            f"Content (first 3000 chars): {content[:3000]}"
+            "Analyze the blog post content. Generate 5 high-value, technical tags (keywords) "
+            "that best summarize the topic. Return ONLY the 5 tags separated by commas, "
+            "with no surrounding text, quotes, or markdown list formatting. "
+            "Tags must be in lower case and hyphenated for spaces."
+            f"\n\n--- Content Snippet (for analysis) ---\n{content[:3000]}"
         )
         
+        # Call the model
         response = client.models.generate_content(
             model='gemini-2.5-flash',
             contents=prompt
         )
         
-        # Clean the response string (remove spaces, split by comma)
+        # --- Post-Processing ---
+        # 1. Clean up the raw text response
         raw_tags = response.text.strip().lower().split(',')
-        cleaned_tags = [tag.strip().replace(' ', '-') for tag in raw_tags if tag.strip()]
+        
+        # 2. Further clean each tag: strip whitespace and replace internal spaces with hyphens
+        cleaned_tags = [
+            tag.strip().replace(' ', '-') for tag in raw_tags if tag.strip()
+        ]
 
+        print(f"AI Generated Tags: {cleaned_tags}")
         return cleaned_tags
 
     except Exception as e:
         print(f"Error calling LLM API: {e}")
-        # Return an empty list to avoid crashing the workflow
+        # Return an empty list so the workflow does not crash
         return []
 
 # --- Main Logic ---
@@ -77,41 +104,33 @@ def main():
     try:
         front_matter, post_content = parse_file(POST_TO_PROCESS)
         
-        # 1. Check for the Sentinel Tag
-        existing_tags = front_matter.get(TAG_KEY, [])
-        if SENTINEL_TAG in existing_tags:
-            print(f"Post already processed by AI ({SENTINEL_TAG} found). Exiting.")
-            sys.exit(0)
-
         print(f"Processing post: {POST_TO_PROCESS}")
         
-        # 2. Call LLM
-        new_ai_tags = call_llm_for_tags(post_content)
+        # 1. Get existing manual tags (defaults to an empty list if tags field is missing)
+        existing_tags = front_matter.get(TAG_KEY, [])
+        
+        # 2. Call LLM to get new tags
+        new_ai_tags = call_llm_for_tags(post_content) 
         
         if not new_ai_tags:
-            print("No new tags generated by LLM. Exiting.")
+            print("No new tags generated by LLM or API call failed. Exiting.")
             sys.exit(0)
             
-        # 3. Merge and Sanitize
-        
-        # Add the existing and new tags to a set for unique values
+        # 3. Merge Lists using a set to handle unique values (merging logic)
         combined_tags_set = set(existing_tags)
         combined_tags_set.update(new_ai_tags)
         
-        # Add the sentinel tag to prevent future processing
-        combined_tags_set.add(SENTINEL_TAG)
-        
-        # Convert back to list and sort (optional, but good practice)
+        # Convert back to a sorted list for consistent YAML output
         final_tags_list = sorted(list(combined_tags_set))
         
-        # 4. Update and Write File
+        # 4. Update the official 'tags' field
         front_matter[TAG_KEY] = final_tags_list
         write_file(POST_TO_PROCESS, front_matter, post_content)
         
-        print(f"Successfully added {len(new_ai_tags)} tags to the '{TAG_KEY}' field.")
+        print(f"Successfully merged {len(new_ai_tags)} AI tags with existing tags.")
 
     except Exception as e:
-        print(f"A critical error occurred: {e}")
+        print(f"A critical error occurred in main execution: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
