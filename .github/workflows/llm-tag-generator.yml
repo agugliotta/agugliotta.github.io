@@ -1,12 +1,12 @@
 name: 🤖 LLM Tag Generator (Accessory)
 
 on:
-  push:
+  pull_request:
+    # Se ejecuta cuando se abre o actualiza un PR hacia la rama 'main'
     branches: ["main"]
-    # Solo se activa cuando se toca un archivo Markdown dentro de _posts/
+    types: [opened, synchronize, reopened]
     paths:
-      - '_posts/**.md' 
-  workflow_dispatch: # Permite ejecutar manualmente desde la interfaz de GitHub
+      - '_posts/**.md' # Solo si se modifican posts
 
 jobs:
   tag_generation:
