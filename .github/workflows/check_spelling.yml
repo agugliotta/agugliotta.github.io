@@ -1,9 +1,13 @@
 # .github/workflows/check_spelling.yml
 
 name: Spellcheck
+
 on:
-  pull_request:
+  pull_request: 
     types: [opened, synchronize, reopened]
+    # ¡CRUCIAL! Solo se ejecuta si hay cambios en archivos Markdown dentro de _posts/
+    paths:
+      - '_posts/**.md'
 
 jobs:
   spelling:
