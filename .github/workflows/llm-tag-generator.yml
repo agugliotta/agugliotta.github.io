@@ -12,8 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write 
-
-    environment: 'github-pages'
     
     steps:
       - name: Checkout PR Branch
