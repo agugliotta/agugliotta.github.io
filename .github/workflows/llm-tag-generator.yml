@@ -30,21 +30,28 @@ jobs:
       # 💥 NEW HELPER STEP TO FIX PARSING ERROR (No expression syntax here!)
       - name: Set Post File Path Safely
         id: set_path
-        env:
-          MODIFIED_FILES: ${{ steps.files.outputs.added_files }}
         run: |
-          # 1. Check if the 'modified_files' output (space-separated list) is NOT empty.
-          #    This is simpler and safer than checking for '[]' or 'null'.
-          if [[ "$MODIFIED_FILES" != "" ]]; then
-            
-            # 2. Extract the first path from the space-separated list using awk
-            POST_PATH=$(echo "$MODIFIED_FILES" | awk '{print $1}')
-            
-            # 3. Set the output variable
-            echo "post_path=${POST_PATH}" >> $GITHUB_OUTPUT
-          else
-            # 4. If the output is empty, set the flag to SKIP
+          # 1. Almacenar la salida en una variable de shell. 
+          # Usamos comillas dobles para preservar los espacios si están escapados/entrecomillados, 
+          # aunque esto aún no soluciona el problema fundamental del separador.
+          INPUT_FILES="${{ steps.files.outputs.added_files }}"
+          # 2. Verificar si la lista no está vacía.
+          if [[ -z "$INPUT_FILES" ]]; then
+            echo "No se detectaron archivos nuevos. Marcando para SKIP."
             echo "post_path=SKIP" >> $GITHUB_OUTPUT
+          else
+            # --- Manejo del primer archivo (asumiendo que los archivos no tienen espacios) ---
+            # Si la acción de origen SÍ separa por espacios, esta es la forma más limpia:
+            
+            # Lee la variable en un array, usando el espacio como separador (IFS)
+            # Esto FALLARÁ si hay espacios dentro del nombre de archivo sin comillas/escape.
+            read -ra FILE_ARRAY <<< "$INPUT_FILES"
+            
+            # Extrae el primer elemento del array
+            POST_PATH="${FILE_ARRAY[0]}"
+            
+            echo "Primer archivo detectado: $POST_PATH"
+            echo "post_path=$POST_PATH" >> $GITHUB_OUTPUT
           fi
 
       # 2. Setup Python and Dependencies
