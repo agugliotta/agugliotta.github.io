@@ -31,7 +31,7 @@ jobs:
       - name: Set Post File Path Safely
         id: set_path
         env:
-          MODIFIED_FILES: ${{ steps.files.outputs.modified_files }}
+          MODIFIED_FILES: ${{ steps.files.outputs.added_files }}
         run: |
           # 1. Check if the 'modified_files' output (space-separated list) is NOT empty.
           #    This is simpler and safer than checking for '[]' or 'null'.
