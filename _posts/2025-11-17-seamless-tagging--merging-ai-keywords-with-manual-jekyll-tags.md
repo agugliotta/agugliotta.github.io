@@ -1,10 +1,22 @@
 ---
 layout: post
-title: "Seamless Tagging: Merging AI Keywords with Manual Jekyll Tags"
+title: 'Seamless Tagging: Merging AI Keywords with Manual Jekyll Tags'
 date: 2025-11-17 17:58:46
 category: tech, jekyll, ai, devops
-tags: [github, actions, llm, automation, python, devops]
+tags:
+- actions
+- automated-seo
+- automation
+- devops
+- github
+- github-actions
+- jekyll-front-matter
+- llm
+- llm-tag-generation
+- python
+- python-scripting
 ---
+
 # Merge Magic: Combining Manual and AI Tags in Your Jekyll Blog
 
 Choosing the best keywords for SEO doesn't have to be a manual chore. The most efficient strategy for Jekyll is to **merge powerful AI keywords** directly into the official **`tags`** list, complementing any tags you've already created.
@@ -136,5 +148,3 @@ jobs:
           commit_user_name: 'AI Tag Generator Bot'
           commit_user_email: 'ai-bot@users.noreply.github.com'
 ```
-
-
