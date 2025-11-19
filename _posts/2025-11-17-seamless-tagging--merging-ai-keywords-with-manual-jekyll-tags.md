@@ -108,7 +108,6 @@ name: 🤖 LLM Tag Generator (PR Trigger)
 
 on:
   pull_request:
-    # Trigger only when a PR is opened or updated targeting 'main'.
     branches: ["main"]
     types: [opened, synchronize, reopened]
     paths:
@@ -119,27 +118,59 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write 
-      
+    
     steps:
       - name: Checkout PR Branch
         uses: actions/checkout@v4
         with:
-          # Checks out the branch that initiated the PR
           ref: ${{ github.event.pull_request.head.ref }} 
           fetch-depth: 0 
 
-      # ... (Standard steps: Get modified files, Setup Python, Install Dependencies) ...
+      # 1. Identify Modified Files
+      - name: Get modified files
+        id: files
+        uses: tj-actions/changed-files@v46.0.1
+        with:
+          files: '_posts/**.md'
+          
+      # 💥 NEW HELPER STEP TO FIX PARSING ERROR (No expression syntax here!)
+      - name: Set Post File Path Safely
+        id: set_path
+        run: |
+          INPUT_FILES="${{ steps.files.outputs.added_files }}"
+          if [[ -z "$INPUT_FILES" ]]; then
+            echo "post_path=SKIP" >> $GITHUB_OUTPUT
+          else
+            read -ra FILE_ARRAY <<< "$INPUT_FILES"           
+            POST_PATH="${FILE_ARRAY[0]}"
+            echo "post_path=$POST_PATH" >> $GITHUB_OUTPUT
+          fi
 
+      # 2. Setup Python and Dependencies
+      - name: Setup Python
+        if: steps.set_path.outputs.post_path != 'SKIP' # Use the new path check
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install LLM dependencies
+        if: steps.set_path.outputs.post_path != 'SKIP'
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r scripts/requirements.txt
+          
+      # 3. Execute the Tag Generation Script
       - name: Run LLM Tag Generation Script
-        if: steps.files.outputs.modified_files_serialized != '[]'
+        if: steps.set_path.outputs.post_path != 'SKIP'
         run: python scripts/generate_llm_tags.py
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          POST_TO_PROCESS: ${{ fromJson(steps.files.outputs.modified_files_serialized)[0] }} 
+          # Now safely use the output from the helper step
+          POST_TO_PROCESS: ${{ steps.set_path.outputs.post_path }} 
           
-      # 2. Commit generated changes back to the PR
+      # 4. Commit generated changes back to the PR
       - name: Commit merged tags to PR branch
-        if: success() && steps.files.outputs.modified_files_serialized != '[]'
+        if: success() && steps.set_path.outputs.post_path != 'SKIP'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'feat: [AI] Merged LLM tags into official tags list.'
