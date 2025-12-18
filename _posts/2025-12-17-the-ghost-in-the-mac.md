@@ -1,9 +1,18 @@
 ---
 layout: post
-title: "The Ghost in the Mac: When 'Privacy' Features Gaslight Your Homelab"
+title: 'The Ghost in the Mac: When ''Privacy'' Features Gaslight Your Homelab'
 date: 2025-12-17 22:53:58
 category: homelab, networking
-tags: [proxmox, macos, nginx, pihole]
+tags:
+- apple-masque-proxy
+- browser-connectivity-issues
+- homelab-networking
+- macos
+- macos-network-framework
+- nginx
+- pihole
+- privacy-relay
+- proxmox
 ---
 
 There is a specific, modern brand of frustration reserved for the homelabber: the moment your infrastructure is technically flawless, yet your workstation insists it doesn't exist. I recently found myself in a "Connectivity Twilight Zone" where my Proxmox lab was online, responding to pings, and accepting SSH connections, while every browser on my Mac returned a cold, hard `ERR_ADDRESS_UNREACHABLE`.
@@ -63,5 +72,3 @@ sudo killall -HUP mDNSResponder
 This incident serves as a reminder that as our Operating Systems become more "secure" and "private," they also become more opaque. Apple’s attempt to anonymize the web is noble for a user at a coffee shop, but for a homelabber, it’s a silent killer of local connectivity.
 
 If your network is lying to you, stop checking your cables and start checking your "Privacy" toggles.
-
-
