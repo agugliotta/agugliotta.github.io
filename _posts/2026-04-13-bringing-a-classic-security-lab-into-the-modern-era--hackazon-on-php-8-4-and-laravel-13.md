@@ -1,9 +1,20 @@
 ---
 layout: post
-title: "Bringing a Classic Security Lab into the Modern Era: Hackazon on PHP 8.4 and Laravel 13"
+title: 'Bringing a Classic Security Lab into the Modern Era: Hackazon on PHP 8.4 and
+  Laravel 13'
 date: 2026-04-13 15:24:49
 category: security
-tags: [hackazon, laravel, php, security, docker]
+tags:
+- ai-assisted-development
+- application-modernization
+- docker
+- hackazon
+- laravel
+- php
+- security
+- vulnerability-preservation
+- vulnerable-web-applications
+- web-security-education
 ---
 
 I had a problem. I wanted to run a hands-on web security lab for a group of students, and Hackazon was the obvious choice — it's the best intentionally vulnerable app out there for teaching real OWASP attack patterns in a realistic context. Full e-commerce shell, covers SQLi, XSS, CSRF, IDOR, RFI, XXE, command injection. It's genuinely good.
