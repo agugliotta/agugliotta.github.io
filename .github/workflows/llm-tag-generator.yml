@@ -39,6 +39,9 @@ jobs:
           if [[ -z "$INPUT_FILES" ]]; then
             echo "No se detectaron archivos nuevos. Marcando para SKIP."
             echo "post_path=SKIP" >> $GITHUB_OUTPUT
+          elif git log --format='%s' "origin/${{ github.event.pull_request.base.ref }}..HEAD" | grep -Fqx 'feat: [AI] Merged LLM tags into official tags list.'; then
+            echo "Los tags de IA ya fueron generados para este PR. Marcando para SKIP."
+            echo "post_path=SKIP" >> $GITHUB_OUTPUT
           else
             # --- Manejo del primer archivo (asumiendo que los archivos no tienen espacios) ---
             # Si la acción de origen SÍ separa por espacios, esta es la forma más limpia:
