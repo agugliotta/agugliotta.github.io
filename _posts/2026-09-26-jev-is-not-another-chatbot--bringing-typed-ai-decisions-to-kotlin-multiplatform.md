@@ -5,6 +5,7 @@ date: 2026-09-26 08:39:22
 category: ai
 tags:
 - ai
+- ai-client-sdk
 - ai-decisioning
 - jev
 - kmp
@@ -13,8 +14,11 @@ tags:
 - ktor
 - ktor-client
 - probabilistic-ai
+- probabilistic-models
 - sdk
+- structured-ai-decisions
 - structured-ai-output
+- system-one-ai
 ---
 
 For the last few years, most AI integrations have followed the same pattern: send a prompt, get some text back, and then write increasingly nervous code to figure out what the model actually meant.
