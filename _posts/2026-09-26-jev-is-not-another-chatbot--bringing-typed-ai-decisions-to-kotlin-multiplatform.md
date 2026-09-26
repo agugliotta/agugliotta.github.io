@@ -1,9 +1,20 @@
 ---
 layout: post
-title: "Jev Is Not Another Chatbot: Bringing Typed AI Decisions to Kotlin Multiplatform"
+title: 'Jev Is Not Another Chatbot: Bringing Typed AI Decisions to Kotlin Multiplatform'
 date: 2026-09-26 08:39:22
 category: ai
-tags: [jev, kotlin, kotlin-multiplatform, kmp, ai, ktor, sdk]
+tags:
+- ai
+- ai-decisioning
+- jev
+- kmp
+- kotlin
+- kotlin-multiplatform
+- ktor
+- ktor-client
+- probabilistic-ai
+- sdk
+- structured-ai-output
 ---
 
 For the last few years, most AI integrations have followed the same pattern: send a prompt, get some text back, and then write increasingly nervous code to figure out what the model actually meant.
@@ -188,4 +199,3 @@ It takes a piece of state, answers a narrowly defined question, and gives contro
 That feels like a useful missing layer between traditional deterministic code and a general-purpose reasoning model.
 
 If you are working with Kotlin Multiplatform, take the SDK for a spin and let me know where the API feels natural—or where it gets in your way. The project is early, and this is exactly the moment when real use cases can shape it.
-
