@@ -74,6 +74,7 @@ SDK
 SSID
 TLS
 TypeSafe
+TypeSafe's
 UI
 VE
 VM
