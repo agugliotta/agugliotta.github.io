@@ -8,7 +8,6 @@ tags:
 - ai-assisted-development
 - allwinner-a23-linux
 - android-homelab-dashboard
-- custom-firmware-flashing
 - homelab
 - linux
 - proxmox
