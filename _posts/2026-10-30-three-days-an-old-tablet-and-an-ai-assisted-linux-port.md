@@ -1,9 +1,18 @@
 ---
 layout: post
-title: "Three Days, an Old Tablet, and an AI-Assisted Linux Port"
+title: Three Days, an Old Tablet, and an AI-Assisted Linux Port
 date: 2026-10-30 11:16:42 -0300
 category: linux
-tags: [linux, homelab, proxmox, reverse-engineering, ai]
+tags:
+- ai
+- ai-assisted-development
+- allwinner-a23-linux
+- android-homelab-dashboard
+- custom-firmware-flashing
+- homelab
+- linux
+- proxmox
+- reverse-engineering
 ---
 
 An old Android tablet became a touchscreen dashboard for my homelab in roughly three days. Getting there involved bootloaders, Linux, reverse engineering, a lot of testing, and an AI coding agent that made the whole project manageable.
